@@ -1,18 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Dec 27 15:58:13 2013
-
-Esqueleto de agente usando los servicios web de Flask
-
-/comm es la entrada para la recepcion de mensajes del agente
-/Stop es la entrada que para el agente
-
-Tiene una funcion AgentBehavior1 que se lanza como un thread concurrente
-
-Asume que el agente de registro esta en el puerto 9000
-
-@author: javier
-"""
 
 from multiprocessing import Process, Queue
 import socket
