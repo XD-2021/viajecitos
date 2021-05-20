@@ -13,6 +13,7 @@ Created on 09/02/2014
 """
 
 from multiprocessing import Process
+from multiprocessing import Process
 import logging
 import argparse
 
