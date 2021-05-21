@@ -10,10 +10,15 @@ Created on 08/02/2014
 """
 __author__ = 'javier'
 
+from imaplib import Literal
+
 from rdflib import Graph, URIRef
 import requests
-from rdflib.namespace import RDF, OWL
+from rdflib.namespace import RDF, OWL, FOAF
 from AgentUtil.ACL import ACL
+from AgentUtil.Agent import Agent
+from AgentUtil.DSO import DSO
+from Agentes.AgenteInteracciones import agn
 
 
 def build_message(gmess, perf, sender=None, receiver=None,  content=None, msgcnt=0):
@@ -61,18 +66,17 @@ def send_message(gmess, address):
     return gr
 
 
+
 def get_message_properties(msg):
     """
     Extrae las propiedades de un mensaje ACL como un diccionario.
     Del contenido solo saca el primer objeto al que apunta la propiedad
-
     Los elementos que no estan, no aparecen en el diccionario
     """
-    props = {'performative': ACL.performative, 'sender': ACL.sender,
+    props = {'performative' : ACL.performative, 'sender': ACL.sender,
              'receiver': ACL.receiver, 'ontology': ACL.ontology,
              'conversation-id': ACL['conversation-id'],
              'in-reply-to': ACL['in-reply-to'], 'content': ACL.content}
-
     msgdic = {} # Diccionario donde se guardan los elementos del mensaje
 
     # Extraemos la parte del FipaAclMessage del mensaje
@@ -85,3 +89,48 @@ def get_message_properties(msg):
             if val is not None:
                 msgdic[key] = val
     return msgdic
+
+
+def get_agent_info(type_, directory_agent, sender, msgcnt):
+    gmess = Graph()
+    # Construimos el mensaje de registro
+    gmess.bind('foaf', FOAF)
+    gmess.bind('dso', DSO)
+    ask_obj = agn[sender.name + '-Search']
+
+    gmess.add((ask_obj, RDF.type, DSO.Search))
+    gmess.add((ask_obj, DSO.AgentType, type_))
+    gr = send_message(
+        build_message(gmess, perf=ACL.request, sender=sender.uri, receiver=directory_agent.uri, msgcnt=msgcnt,
+                      content=ask_obj),
+        directory_agent.address
+    )
+    dic = get_message_properties(gr)
+    content = dic['content']
+
+    address = gr.value(subject=content, predicate=DSO.Address)
+    url = gr.value(subject=content, predicate=DSO.Uri)
+    name = gr.value(subject=content, predicate=FOAF.name)
+
+    return Agent(name, url, address, None)
+
+
+def register_agent(origin_agent, directory_agent, type_, msg_cnt):
+    gmess = Graph()
+    # Construimos el mensaje de registro
+    gmess.bind('foaf', FOAF)
+    gmess.bind('dso', DSO)
+    reg_obj = agn[origin_agent.name + '-Register']
+    gmess.add((reg_obj, RDF.type, DSO.Register))
+    gmess.add((reg_obj, DSO.Uri, origin_agent.uri))
+    gmess.add((reg_obj, FOAF.Name, Literal(origin_agent.name)))
+    gmess.add((reg_obj, DSO.Address, Literal(origin_agent.address)))
+    gmess.add((reg_obj, DSO.AgentType, type_))
+    # Lo metemos en un envoltorio FIPA-ACL y lo enviamos
+    gr = send_message(
+        build_message(gmess, perf=ACL.request,
+                      sender=origin_agent.uri,
+                      receiver=directory_agent.uri,
+                      content=reg_obj,
+                      msgcnt=msg_cnt),
+        directory_agent.address)
