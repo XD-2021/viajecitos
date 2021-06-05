@@ -163,7 +163,7 @@ def buscar_transportes_externamente(ciudadOrigen, ciudadDestino, inicioData, fin
 
         # Llega a
         gr.add((llega_a, RDF.type, ECSDI.aeropuerto))
-        gr.add((llega_a, ECSDI.nombre, Literal(array_aeropuertos[inde x %2])))
+        gr.add((llega_a, ECSDI.nombre, Literal(array_aeropuertos[index %2])))
 
         # Sale_de
         gr.add((sale_de, RDF.type, ECSDI.aeropuerto))
