@@ -124,11 +124,11 @@ def hoteles():
             accion = gm.value(subject=content, predicate=RDF.type)
 
             if accion == "peticion_de_alojamiento":
-
-    outbounddate = request.args["fechaSalida"]
-    inbounddate = request.args["fechaVuelta"]
-    respuesta = arrayalojamientos[random.randint(0, len(arrayalojamientos)-1)]
-    return respuesta
+                outbounddate = request.args["fechaSalida"]
+                inbounddate = request.args["fechaVuelta"]
+                respuesta = arrayalojamientos[random.randint(0, len(arrayalojamientos)-1)]
+                return respuesta
+            return 0    #lol
 
 def get_count():
     global mss_cnt
