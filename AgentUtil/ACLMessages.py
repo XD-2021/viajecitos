@@ -134,3 +134,17 @@ def register_agent(origin_agent, directory_agent, type_, msg_cnt):
                       content=reg_obj,
                       msgcnt=msg_cnt),
         directory_agent.address)
+
+
+def send_message(gmess, address):
+    """
+    Envia un mensaje usando un request y retorna la respuesta como
+    un grafo RDF
+    """
+    msg = gmess.serialize(format='xml')
+    r = requests.get(address, params={'content': msg})
+    # Procesa la respuesta y la retorna como resultado como grafo
+    gr = Graph()
+    gr.parse(data=r.text)
+
+    return gr
