@@ -20,12 +20,13 @@ import random
 from multiprocessing import Process, Queue
 import argparse
 import logging
-
+import socket
 from flask import Flask, request, render_template
 from rdflib import Graph, RDF, Namespace, RDFS, Literal
 from rdflib.namespace import FOAF
 
 from AgentUtil.ACL import ACL
+from AgentUtil.ACLMessages import get_message_properties, build_message
 from AgentUtil.FlaskServer import shutdown_server
 from AgentUtil.Agent import Agent
 #from AgentUtil.ACLMessages import build_message, get_message_properties
@@ -56,7 +57,7 @@ else:
 if args.open:
     hostname = '0.0.0.0'
 else:
-    hostname = gethostname()
+    hostname = socket.gethostname()
 
 # Directory Service Graph
 dsgraph = Graph()
