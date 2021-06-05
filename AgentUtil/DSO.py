@@ -10,7 +10,7 @@
 from rdflib import URIRef
 from rdflib.namespace import ClosedNamespace
 
-DSO =  ClosedNamespace(
+DSO = ClosedNamespace(
     uri=URIRef('http://www.semanticweb.org/xivla/ontologies/2021/4/Viajes'),
     terms=[
         # Classes
@@ -51,7 +51,7 @@ DSO =  ClosedNamespace(
         'AgenciasDeTransporte',
         'AgenteUsuario',
         'CentrosDeActividades',
-        'HotelesYotrosAlojaamiento',
+        'HotelesYotrosAlojamiento',
         'ServicioDeClima'
 
     ]
