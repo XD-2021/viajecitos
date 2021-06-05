@@ -1,12 +1,12 @@
+from random import random
+
 from flask import Flask, request, Response
 from flask.json import jsonify
 import json
 import argparse
 import requests
 from requests import ConnectionError
-from multiprocessing import Process
-from googleplaces import GooglePlaces, types, lang
-import string
+import random
 
 # Definimos los parametros de la linea de comandos
 parser = argparse.ArgumentParser()
@@ -18,18 +18,29 @@ parser.add_argument('--messages', nargs='+', default=[], help="mensajes a enviar
 
 app = Flask(__name__)
 
+arrayActividadesEvento = ["FESTIVIDAD", "FIESTA NOCHE", "NIGHT CLUB"]
+arrayActividadesRestaurante = ["RESTAURANTE PACO", "RESTAURANTE DE MARISCO 1", "RESTAURANTE 2" ,"RESTAURANTE 3"]
+arrayActividadesTuristico = ["SAGRADA FAMILIA", "MACBA", "CASTILLO MONTJUIC", "PARC GÜELL", "MNAC", "FUNDACIÓ JOAN MIRÓ"]
+
 @app.route("/")
 def isAlive():
-    text = 'Hi i\'m AgExtActividades o/, if you wanna party go to <a href= /place?location=Barcelona,%20Spain&keyword=Discoteca&type=night_club>here</a>'
-    return text
+    texto = 'Hola soy los centros de actividades.  Para obtener las actividades para tu viaje ve a http://localhost:5000/actividades'
+    return texto
 
 
-@app.route("/place")
-def getPlaces():
+@app.route("/actividades")
+def actividades():
     """
     /place?location=loc&keyword=key&type=type
     :return:
     """
+    country = request.args["pais"]
+    currency = request.args["moneda"]
+    date = request.args["fecha"]
+
+    respuesta = arrayActividadesTuristico[random.randint(0, len(arrayActividadesTuristico)-1)]
+
+    return respuesta
 
 if __name__ == '__main__':
 
@@ -37,6 +48,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # Ponemos en marcha el servidor
-    app.run(host=args.host, port=args.port)
+    app.run(host=args.host, port=5002)
 
-    print 'The End'
+    print('The End')
