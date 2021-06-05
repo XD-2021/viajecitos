@@ -10,18 +10,15 @@ Created on 08/02/2014
 """
 __author__ = 'javier'
 
-from imaplib import Literal
-
-from rdflib import Graph, URIRef
 import requests
-from rdflib.namespace import RDF, OWL, FOAF
-from AgentUtil.ACL import ACL
+from rdflib import Graph, Namespace, Literal, logger
+from rdflib.namespace import RDF, FOAF
+from AgentUtil.OntoNamespaces import ACL, DSO
 from AgentUtil.Agent import Agent
-from AgentUtil.DSO import DSO
-from Agentes.AgenteInteracciones import agn
 
+agn = Namespace("http://www.agentes.org#")
 
-def build_message(gmess, perf, sender=None, receiver=None,  content=None, msgcnt=0):
+def build_message(gmess, perf, sender=None, receiver=None,  content=None, msgcnt= 0):
     """
     Construye un mensaje como una performativa FIPA acl
     Asume que en el grafo que se recibe esta ya el contenido y esta ligado al
@@ -36,11 +33,9 @@ def build_message(gmess, perf, sender=None, receiver=None,  content=None, msgcnt
     :return:
     """
     # Añade los elementos del speech act al grafo del mensaje
-    mssid = f'message-{sender.__hash__()}-{msgcnt:04}'
-    # No podemos crear directamente una instancia en el namespace ACL ya que es un ClosedNamedspace
-    ms = URIRef(mssid)
+    mssid = 'message-'+str(sender.__hash__()) + '-{:{fill}4d}'.format(msgcnt, fill='0')
+    ms = ACL[mssid]
     gmess.bind('acl', ACL)
-    gmess.add((ms, RDF.type, OWL.NamedIndividual)) # Declaramos la URI como instancia
     gmess.add((ms, RDF.type, ACL.FipaAclMessage))
     gmess.add((ms, ACL.performative, perf))
     gmess.add((ms, ACL.sender, sender))
@@ -53,12 +48,11 @@ def build_message(gmess, perf, sender=None, receiver=None,  content=None, msgcnt
 
 def send_message(gmess, address):
     """
-    Envia un mensaje usando un GET y retorna la respuesta como
+    Envia un mensaje usando un request y retorna la respuesta como
     un grafo RDF
     """
     msg = gmess.serialize(format='xml')
     r = requests.get(address, params={'content': msg})
-
     # Procesa la respuesta y la retorna como resultado como grafo
     gr = Graph()
     gr.parse(data=r.text)
@@ -66,11 +60,11 @@ def send_message(gmess, address):
     return gr
 
 
-
 def get_message_properties(msg):
     """
     Extrae las propiedades de un mensaje ACL como un diccionario.
     Del contenido solo saca el primer objeto al que apunta la propiedad
+
     Los elementos que no estan, no aparecen en el diccionario
     """
     props = {'performative' : ACL.performative, 'sender': ACL.sender,
