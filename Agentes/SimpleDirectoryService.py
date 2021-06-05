@@ -16,7 +16,7 @@ directory-service-ontology.owl
 
 @author: javier
 """
-
+import random
 from multiprocessing import Process, Queue
 import argparse
 import logging
@@ -28,7 +28,7 @@ from rdflib.namespace import FOAF
 from AgentUtil.ACL import ACL
 from AgentUtil.FlaskServer import shutdown_server
 from AgentUtil.Agent import Agent
-from AgentUtil.ACLMessages import build_message, get_message_properties
+#from AgentUtil.ACLMessages import build_message, get_message_properties
 from AgentUtil.Logging import config_logger
 from AgentUtil.DSO import DSO
 from AgentUtil.Util import gethostname

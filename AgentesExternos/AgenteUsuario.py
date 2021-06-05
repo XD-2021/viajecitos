@@ -22,7 +22,7 @@ from rdflib import Namespace, Graph, logger, FOAF
 from flask import Flask
 
 from AgentUtil.ACL import ACL
-from AgentUtil.ACLMessages import send_message, build_message
+#from AgentUtil.ACLMessages import send_message, build_message
 from AgentUtil.DSO import DSO
 from AgentUtil.FlaskServer import shutdown_server
 from AgentUtil.Agent import Agent
@@ -166,10 +166,10 @@ def agentbehavior1(cola):
     Un comportamiento del agente
 
     :return:
-    """
+"""
     # Buscamos en el directorio
     # un agente de hoteles
-    gr = directory_search_message(AgenteInteracciones)
+    gr = directory_search_message(DSO.AgenteInteracciones)
 
     # Obtenemos la direccion del agente de la respuesta
     # No hacemos ninguna comprobacion sobre si es un mensaje valido

@@ -1,0 +1,274 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="http://www.semanticweb.org/xivla/ontologies/2021/4/Viajes"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="http://www.semanticweb.org/xivla/ontologies/2021/4/Viajes">
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Declaration>
+        <ObjectProperty IRI="#es_respuesta_a"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#ofrece_transporte"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Restricciones_de_transporte"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Peticion_de_ofertas_de_actividades"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Restaurante"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Oferta_de_actividad"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Restricciones_de_alojamiento"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Respuesta_propuesta"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#es_respuesta_a_valoracion"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Valoracion"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Oferta_de_transporte"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#ofrece_actividad"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Evento"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Peticion_de_ofertas_de_alojamiento"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#Ofrece"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Oferta"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Peticion_de_propuesta"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Peticion_de_ofertas_de_transporte"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#valoracion_de_propuesta"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Peticion"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Respuesta"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Restricciones"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Valoracion_del_alojamiento"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Visita_turistica"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Peticion_meteorologica"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#ofrece_alojamiento"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Actividad"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty IRI="#es_respuesta_a_propuesta"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Peticion_de_valoracion"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Oferta_de_alojamiento"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Valoracion_de_las_actividades"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Valoracion_del_transporte"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="#Restricciones_de_actividades"/>
+    </Declaration>
+    <SubClassOf>
+        <Class IRI="#Evento"/>
+        <Class IRI="#Actividad"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Oferta_de_actividad"/>
+        <Class IRI="#Oferta"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Oferta_de_alojamiento"/>
+        <Class IRI="#Oferta"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Oferta_de_transporte"/>
+        <Class IRI="#Oferta"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Peticion_de_ofertas_de_actividades"/>
+        <Class IRI="#Peticion"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Peticion_de_ofertas_de_alojamiento"/>
+        <Class IRI="#Peticion"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Peticion_de_ofertas_de_transporte"/>
+        <Class IRI="#Peticion"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Peticion_de_propuesta"/>
+        <Class IRI="#Peticion"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Peticion_de_valoracion"/>
+        <Class IRI="#Peticion"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Peticion_meteorologica"/>
+        <Class IRI="#Peticion"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Respuesta_propuesta"/>
+        <Class IRI="#Respuesta"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Restaurante"/>
+        <Class IRI="#Actividad"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Restricciones_de_actividades"/>
+        <Class IRI="#Restricciones"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Restricciones_de_alojamiento"/>
+        <Class IRI="#Restricciones"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Restricciones_de_transporte"/>
+        <Class IRI="#Restricciones"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Valoracion_de_las_actividades"/>
+        <Class IRI="#Valoracion"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Valoracion_del_alojamiento"/>
+        <Class IRI="#Valoracion"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Valoracion_del_transporte"/>
+        <Class IRI="#Valoracion"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#Visita_turistica"/>
+        <Class IRI="#Actividad"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class IRI="#valoracion_de_propuesta"/>
+        <Class IRI="#Valoracion"/>
+    </SubClassOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#es_respuesta_a_propuesta"/>
+        <ObjectProperty IRI="#es_respuesta_a"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#es_respuesta_a_valoracion"/>
+        <ObjectProperty IRI="#es_respuesta_a"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#ofrece_actividad"/>
+        <ObjectProperty IRI="#Ofrece"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#ofrece_alojamiento"/>
+        <ObjectProperty IRI="#Ofrece"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty IRI="#ofrece_transporte"/>
+        <ObjectProperty IRI="#Ofrece"/>
+    </SubObjectPropertyOf>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Indice_de_cultura_requerido</IRI>
+        <Literal>debe ser un int del 0 al 10</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Indice_de_festividad_requerido</IRI>
+        <Literal>debe ser un int del 0 al 10</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Indice_de_ludicidad_requerido</IRI>
+        <Literal>debe ser un int del 0 al 10</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Medio_de_transporte</IRI>
+        <Literal>tendra 3 instancias des del inicio. (tren, barco, avion.)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Respuesta_propuesta</IRI>
+        <Literal>ésto es el hecho de que el usuario acepte/rechaze la propuesta realizada por el sistema</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#Tipo_de_alojamiento</IRI>
+        <Literal>Tendra solo un set concreto de instancias des e el inicio:
+&quot;apartamento&quot;, &quot;hotel&quot;, &quot;motel&quot;, &quot;hostal&quot;, ...</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#categoriaHotel</IRI>
+        <Literal>De 0 a 5 estrellas. Puede ser nulo si es un alojamiento..</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#fichero</IRI>
+        <Literal>fichero del justificante (pdf)</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#tipoDeEvento</IRI>
+        <Literal>Restriccón: puede ser &quot;lúdico&quot;, &quot;cultural&quot; o &quot;festivo&quot;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#valoracion_de_propuesta</IRI>
+        <Literal>Valoracion de toda la propuesta de viaje en conjunto</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <IRI>#vegano</IRI>
+        <Literal>Indica si el restaurante tiene opciones veganas</Literal>
+    </AnnotationAssertion>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+
