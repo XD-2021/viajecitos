@@ -7,8 +7,7 @@ import argparse
 from multiprocessing import Queue, Process
 import sys
 from AgentUtil.ACLMessages import get_agent_info, send_message, build_message, get_message_properties, register_agent
-from AgentUtil.OntoNamespaces import ECSDI, ACL
-from googleplaces import GooglePlaces
+from AgentUtil.OntoNamespaces import ACL
 import argparse
 import socket
 from multiprocessing import Process
@@ -61,9 +60,9 @@ else:
     # Data Agent
     # Datos del Agente
     AgenteObtenedorAlojamiento = Agent('AgenteObtenedorDeOfertasDeAlojamiento',
-                        agn.AgenteObtenedorAlojamiento,
-                        'http://%s:%d/comm' % (hostname, port),
-                        'http://%s:%d/Stop' % (hostname, port))
+                                       agn.AgenteObtenedorAlojamiento,
+                                       'http://%s:%d/comm' % (hostname, port),
+                                       'http://%s:%d/Stop' % (hostname, port))
 
     # Directory agent address
     DirectoryAgent = Agent('DirectoryAgent',
@@ -101,6 +100,7 @@ def register_message():
     gr = register_agent(AgenteObtenedorAlojamiento, DirectoryAgent, AgenteObtenedorAlojamiento.uri, get_count())
     return gr
 
+
 @app.route("/comm")
 def communication():
     """
@@ -134,39 +134,28 @@ def communication():
             # Averiguamos el tipo de la accion
             accion = gm.value(subject=content, predicate=RDF.type)
 
-            if accion == ECSDI.peticion_de_alojamiento:
+            if accion == "peticion de alojamiento":
 
-                # TODO: Check parametros ontologia
-                # Peticion de alojamiento tiene
-                # radio_de_restriccion_de_localizacion_en_km (float)
-                # tiene_como_restriccion_de_localizacion (localizacion)
-
-                # Localizacion
-                # direccion (string)
-                # pertenece_a (ciudad)
-
-                # Ciudad
-                # esta_en (Pais)
-                # nombre (string)
-
-                # Pais
-                # nombre (string)
-                localizacion = gm.value(subject=content, predicate=ECSDI.tiene_como_restriccion_de_localizacion)
+                '''localizacion = gm.value(subject=content, predicate=ECSDI.tiene_como_restriccion_de_localizacion)
                 ciudad = gm.value(subject=localizacion, predicate=ECSDI.pertenece_a)
-                nombreCiudad = gm.value(subject=ciudad, predicate=ECSDI.nombre)
+                nombreCiudad = gm.value(subject=ciudad, predicate=ECSDI.nombre)'''
                 logger.info("Mensaje peticion de alojamiento")
 
-                gr = buscar_alojamientos_externamente(**nombreCiudad)
+                agente_ext_alojamiento = get_agent_info(agn.HotelesYotrosAlojamientos, DirectoryAgent,
+                                                        AgenteObtenedorAlojamiento, get_count())
 
-
-                gr.serialize(destination='../data/alojamientos-'+str(nombreCiudad), format='turtle')
+                # Enviamos el mensaje
+                gr = send_message(
+                    build_message(gr, perf=ACL.request, sender=AgenteObtenedorAlojamiento.uri,
+                                  receiver=agente_ext_alojamiento.uri,
+                                  msgcnt=get_count(),
+                                  content=content), agente_ext_alojamiento.address)
 
                 gr = build_message(gr,
                                    ACL['inform-'],
                                    sender=AgenteObtenedorAlojamiento.uri,
                                    msgcnt=mss_cnt,
                                    receiver=msgdic['sender'])
-
 
             else:
                 gr = build_message(Graph(),
@@ -176,6 +165,7 @@ def communication():
 
     serialize = gr.serialize(format='xml')
     return serialize, 200
+
 
 @app.route("/Stop")
 def stop():
@@ -210,8 +200,7 @@ def agent_behaviour(queue):
     gr = register_message()
 
 
-
-def buscar_alojamientos_externamente(ciudadNombre):
+'''def buscar_alojamientos_externamente(ciudadNombre):
 
     # Creamos un array con cuatro alojamientos vacios
     alojamiento_array = [1, 2, 3, 4, 5]
@@ -288,7 +277,7 @@ def buscar_alojamientos_externamente(ciudadNombre):
         gr.add((content, ECSDI.se_construye_de_alojamientos, URIRef(alojamiento)))
         index += 1
     #Devolvemos el grafo
-    return gr
+    return gr'''
 
 if __name__ == '__main__':
     # ------------------------------------------------------------------------------------------------------
