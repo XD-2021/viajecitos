@@ -31,6 +31,7 @@ from AgentUtil.Util import gethostname
 
 __author__ = 'javier'
 
+
 # Definimos los parametros de la linea de comandos
 parser = argparse.ArgumentParser()
 parser.add_argument('--open', help="Define si el servidor est abierto al exterior o no", action='store_true',
@@ -117,7 +118,7 @@ def directory_search_message(type):
 
     msg = build_message(gmess, perf=ACL.request,
                         sender=AgentePersonal.uri,
-                        receiver=DirectoryAgent.uri,
+                        receiver=DirectoryAgentDirectoryAgent.uri,
                         content=reg_obj,
                         msgcnt=mss_cnt)
     gr = send_message(msg, DirectoryAgent.address)

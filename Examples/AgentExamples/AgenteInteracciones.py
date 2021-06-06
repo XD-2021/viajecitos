@@ -18,7 +18,7 @@ from multiprocessing import Process, Queue
 import socket
 
 from rdflib import Namespace, Graph
-from flask import Flask
+from flask import Flask, request
 
 from AgentUtil.FlaskServer import shutdown_server
 from AgentUtil.Agent import Agent
@@ -55,9 +55,32 @@ cola1 = Queue()
 # Flask stuff
 app = Flask(__name__)
 
+
 @app.route("/peticionPlanificacion")
 def gestionarPeticion():
+    mess = request.args['message']
 
+    if '|' not in mess:
+        return 'ERROR: INVALID MESSAGE'
+    else:
+        # Sintaxis de los mensajes "TIPO|PARAMETROS"
+        messtype, messparam = mess.split('|')
+
+        if messtype not in ['PETICION']:  # peticion de planificacion de visita turistica
+            return 'ERROR: INVALID REQUEST'
+        else:
+            # parametros mensaje SOLVE = "SOLVERADDRESS,PROBID,PROB"
+            if messtype == 'PETICION':
+                # té les restricciones
+                restricciones = messparam.split(',')
+
+                # agafar de "restricciones" els 3 possibles elements: restricciones de actividades, de aloj y  de transporte. cadascuna de les 3 és un set de restriccions.
+
+                # p1 = Process(target=solver, args=(solveraddress, probid, prob))
+                # p1.start()
+                return 'OK'
+
+    return
 
 
 @app.route("/comm")
