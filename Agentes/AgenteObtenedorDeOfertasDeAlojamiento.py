@@ -21,6 +21,7 @@ from AgentUtil.Logging import config_logger
 parser = argparse.ArgumentParser()
 parser.add_argument('--open', help="Define si el servidor est abierto al exterior o no", action='store_true',
                     default=False)
+parser.add_argument('--host', default='localhost', help="Host agente")
 parser.add_argument('--port', type=int, help="Puerto de comunicacion del agente")
 parser.add_argument('--dhost', default=socket.gethostname(), help="Host del agente de directorio")
 parser.add_argument('--dport', type=int, help="Puerto de comunicacion del agente de directorio")
@@ -33,7 +34,7 @@ args = parser.parse_args()
 
 # Configuration stuff
 if args.port is None:
-    port = 9000
+    port = 9011
 else:
     port = args.port
 
@@ -43,7 +44,7 @@ else:
     hostname = socket.gethostname()
 
 if args.dport is None:
-    dport = 9081
+    dport = 9000
 else:
     dport = args.dport
 
@@ -52,32 +53,33 @@ if args.dhost is None:
 else:
     dhostname = args.dhost
     # Agent Namespace
-    agn = Namespace("http://www.agentes.org#")
 
-    # Message Count
-    mss_cnt = 0
+agn = Namespace("http://www.agentes.org#")
 
-    # Data Agent
-    # Datos del Agente
-    AgenteObtenedorAlojamiento = Agent('AgenteObtenedorDeOfertasDeAlojamiento',
-                                       agn.AgenteObtenedorAlojamiento,
-                                       'http://%s:%d/comm' % (hostname, port),
-                                       'http://%s:%d/Stop' % (hostname, port))
+# Message Count
+mss_cnt = 0
 
-    # Directory agent address
-    DirectoryAgent = Agent('DirectoryAgent',
-                           agn.Directory,
-                           'http://%s:%d/Register' % (dhostname, dport),
-                           'http://%s:%d/Stop' % (dhostname, dport))
+# Data Agent
+# Datos del Agente
+AgenteObtenedorAlojamiento = Agent('AgenteObtenedorDeOfertasDeAlojamiento',
+                                   agn.AgenteObtenedorAlojamiento,
+                                   'http://%s:%d/comm' % (hostname, port),
+                                   'http://%s:%d/Stop' % (hostname, port))
 
-    # Global triplestore graph
-    dsGraph = Graph()
+# Directory agent address
+DirectoryAgent = Agent('DirectoryAgent',
+                       agn.Directory,
+                       'http://%s:%d/Register' % (dhostname, dport),
+                       'http://%s:%d/Stop' % (dhostname, dport))
 
-    # Queue
-    queue = Queue()
+# Global triplestore graph
+dsGraph = Graph()
 
-    # Flask app
-    app = Flask(__name__)
+# Queue
+queue = Queue()
+
+# Flask app
+app = Flask(__name__)
 
 
 def get_count():
@@ -278,6 +280,15 @@ def agent_behaviour(queue):
         index += 1
     #Devolvemos el grafo
     return gr'''
+def agent_behaviour(queue):
+    """
+    Agent Behaviour in a concurrent thread.
+    :param queue: the queue
+    :return: something
+    """
+
+    gr = register_message()
+
 
 if __name__ == '__main__':
     # ------------------------------------------------------------------------------------------------------
@@ -286,7 +297,7 @@ if __name__ == '__main__':
     ab1.start()
 
     # Run server
-    app.run(host=hostname, port=port, debug=True)
+    app.run(host=args.host, port=port, debug=True)
 
     # Wait behaviors
     ab1.join()

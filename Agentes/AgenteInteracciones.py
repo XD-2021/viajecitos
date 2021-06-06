@@ -41,7 +41,7 @@ args = parser.parse_args()
 # Configuration stuff
 hostname = socket.gethostname()
 if args.port is None:
-    port = 9020
+    port = 9001
 else:
     port = args.port
 

@@ -8,7 +8,7 @@ import random
 from multiprocessing import Queue, Process
 import sys
 from AgentUtil.ACLMessages import get_agent_info, send_message, build_message, get_message_properties, register_agent
-from AgentUtil.OntoNamespaces import ACL
+from AgentUtil.OntoNamespaces import ACL, ECSDI
 import argparse
 import socket
 from multiprocessing import Process
@@ -49,7 +49,7 @@ class Transporte:
 # Definimos los parametros de la linea de comandos
 parser = argparse.ArgumentParser()
 parser.add_argument('--open', help="Define si el servidor est abierto al exterior o no", action='store_true',
-                    default=False)
+                    default=True)
 parser.add_argument('--port', type=int, help="Puerto de comunicacion del agente")
 parser.add_argument('--dhost', default=socket.gethostname(), help="Host del agente de directorio")
 parser.add_argument('--dport', type=int, help="Puerto de comunicacion del agente de directorio")
@@ -62,7 +62,7 @@ args = parser.parse_args()
 
 # Configuration stuff
 if args.port is None:
-    port = 9000
+    port = 9002
 else:
     port = args.port
 
@@ -72,7 +72,7 @@ else:
     hostname = socket.gethostname()
 
 if args.dport is None:
-    dport = 9081
+    dport = 9000
 else:
     dport = args.dport
 
@@ -80,33 +80,34 @@ if args.dhost is None:
     dhostname = socket.gethostname()
 else:
     dhostname = args.dhost
-    # Agent Namespace
-    agn = Namespace("http://www.agentes.org#")
 
-    # Message Count
-    mss_cnt = 0
+# Agent Namespace
+agn = Namespace("http://www.agentes.org#")
 
-    # Data Agent
-    # Datos del Agente
-    PlannerAgent = Agent('AgenteProcesador',
-                         agn.PlannerAgent,
-                         'http://%s:%d/comm' % (hostname, port),
-                         'http://%s:%d/Stop' % (hostname, port))
+# Message Count
+mss_cnt = 0
 
-    # Directory agent address
-    DirectoryAgent = Agent('DirectoryAgent',
-                           agn.Directory,
-                           'http://%s:%d/Register' % (dhostname, dport),
-                           'http://%s:%d/Stop' % (dhostname, dport))
+# Data Agent
+# Datos del Agente
+AgenteProcesador = Agent('AgenteProcesador',
+                     agn.AgenteProcesador,
+                     'http://%s:%d/comm' % (hostname, port),
+                     'http://%s:%d/Stop' % (hostname, port))
 
-    # Global triplestore graph
-    dsGraph = Graph()
+# Directory agent address
+DirectoryAgent = Agent('DirectoryAgent',
+                       agn.Directory,
+                       'http://%s:%d/Register' % (dhostname, dport),
+                       'http://%s:%d/Stop' % (dhostname, dport))
 
-    # Queue
-    queue = Queue()
+# Global triplestore graph
+dsGraph = Graph()
 
-    # Flask app
-    app = Flask(__name__)
+# Queue
+queue = Queue()
+
+# Flask app
+app = Flask(__name__)
 
 
 def get_count():
@@ -126,7 +127,7 @@ def register_message():
 
     logger.info('Nos registramos')
 
-    gr = register_agent(PlannerAgent, DirectoryAgent, PlannerAgent.uri, get_count())
+    gr = register_agent(AgenteProcesador, DirectoryAgent, AgenteProcesador.uri, get_count())
     return gr
 
 '''
@@ -315,29 +316,29 @@ def buscar_transporte(ciudadOrigen, ciudadDestino, finData, inicioData):
 
 def buscar_alojamiento(ciudadNombre='Barcelona'):
     # Creamos el contenido
-    content = "peticion de alojamiento"
+    content = ECSDI['peticion_de_alojamiento' + str(get_count())]
 
     # Creamos los objetos necesarios para las tripletas del grafo
-    '''
+
     ciudad = ECSDI['ciudad' + str(get_count())]
     localizacion = ECSDI['localizacion' + str(get_count())]
-    '''
+
     # Creamos el grafo con las tripletas
 
     grafo = Graph()
-    '''
+
     grafo.add((ciudad, RDF.type, ECSDI.ciudad))
     grafo.add((localizacion, RDF.type, ECSDI.localizacion))
     grafo.add((ciudad, ECSDI.nombre, Literal(ciudadNombre)))
     grafo.add((localizacion, ECSDI.pertenece_a, URIRef(ciudad)))
     grafo.add((content, RDF.type, ECSDI.peticion_de_alojamiento))
     grafo.add((content, ECSDI.tiene_como_restriccion_de_localizacion, URIRef(localizacion)))
-'''
+
     # Preguntamos por el agente que necesitamos
-    agente_alojamiento = get_agent_info(agn.AgGestorAlojamiento, DirectoryAgent, PlannerAgent, get_count())
+    agente_alojamiento = get_agent_info(agn.AgenteObtenedorDeOfertasDeAlojamiento, DirectoryAgent, AgenteProcesador, get_count())
 
     # Enviamos el mensaje
-    gr = send_message(build_message(grafo, perf=ACL.request, sender=PlannerAgent.uri, receiver=agente_alojamiento.uri,
+    gr = send_message(build_message(grafo, perf=ACL.request, sender=AgenteProcesador.uri, receiver=agente_alojamiento.uri,
                                     msgcnt=get_count(),
                                     content=content), agente_alojamiento.address)
 
@@ -570,7 +571,7 @@ def agent_behaviour(queue):
     :return: something
     """
 
-    # gr = register_message()
+    gr = register_message()
     buscar_alojamiento()
 
 

@@ -14,7 +14,7 @@ from AgentUtil.ACL import ACL
 from AgentUtil.ACLMessages import get_message_properties, build_message
 from AgentUtil.Agent import Agent
 from AgentUtil.Logging import config_logger
-from Agentes.AgenteObtenedorDeOfertasDeAlojamiento import AgenteObtenedorAlojamiento
+from Agentes.AgenteObtenedorDeOfertasDeAlojamiento import AgenteObtenedorAlojamiento, dhostname, dport
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--host', default='localhost', help="Host agente")
@@ -35,44 +35,37 @@ if args.port is None:
 else:
     port = args.port
 
-if args.open is None:
-    hostname = '0.0.0.0'
-else:
-    hostname = socket.gethostname()
+hostname = socket.gethostname()
 
-if args.dport is None:
-    dport = 9081
-else:
-    dport = args.dport
 
-if args.dhost is None:
-    dhostname = socket.gethostname()
-else:
-    dhostname = args.dhost
-    # Agent Namespace
-    agn = Namespace("http://www.agentes.org#")
 
-    # Message Count
-    mss_cnt = 0
 
-    # Data Agent
-    # Datos del Agente
-    AgenteObtenedorAlojamiento = Agent('AgenteObtenedorDeOfertasDeAlojamiento',
-                        agn.AgenteObtenedorAlojamiento,
-                        'http://%s:%d/comm' % (hostname, port),
-                        'http://%s:%d/Stop' % (hostname, port))
 
-    # Directory agent address
-    DirectoryAgent = Agent('DirectoryAgent',
-                           agn.Directory,
-                           'http://%s:%d/Register' % (dhostname, dport),
-                           'http://%s:%d/Stop' % (dhostname, dport))
 
-    # Global triplestore graph
-    dsGraph = Graph()
+# Agent Namespace
+agn = Namespace("http://www.agentes.org#")
 
-    # Queue
-    queue = Queue()
+# Message Count
+mss_cnt = 0
+
+# Data Agent
+# Datos del Agente
+AgenteObtenedorAlojamiento = Agent('AgenteObtenedorDeOfertasDeAlojamiento',
+                    agn.AgenteObtenedorAlojamiento,
+                    'http://%s:%d/comm' % (hostname, port),
+                    'http://%s:%d/Stop' % (hostname, port))
+
+# Directory agent address
+DirectoryAgent = Agent('DirectoryAgent',
+                       agn.Directory,
+                       'http://%s:%d/Register' % (dhostname, dport),
+                       'http://%s:%d/Stop' % (dhostname, dport))
+
+# Global triplestore graph
+dsGraph = Graph()
+
+# Queue
+queue = Queue()
 
 app = Flask(__name__)
 
@@ -141,6 +134,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # Ponemos en marcha el servidor
-    app.run(host=args.host, port=5001)
+    app.run(host=args.host, port=9102)
 
     print('The End')

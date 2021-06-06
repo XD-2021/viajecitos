@@ -42,6 +42,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # Ponemos en marcha el servidor
-    app.run(host=args.host, port=args.port)
+    app.run(host=args.host, port=9100)
 
     print('The End')
