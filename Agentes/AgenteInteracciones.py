@@ -22,8 +22,6 @@ from AgentUtil.DSO import DSO
 from AgentUtil.Logging import config_logger
 from AgentUtil.FlaskServer import shutdown_server
 
-__author__ = 'javier'
-
 # Definimos los parametros de la linea de comandos
 parser = argparse.ArgumentParser()
 parser.add_argument('--open', help="Define si el servidor est abierto al exterior o no", action='store_true',
